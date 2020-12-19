@@ -8,4 +8,5 @@ int main()
     int b=5;
     cout << "Hello world!" << endl;
     return 0;
+    cout<<"help";
 }

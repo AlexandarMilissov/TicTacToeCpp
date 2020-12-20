@@ -66,3 +66,8 @@ HWND CreateWindowExA(
   HINSTANCE hInstance,
   LPVOID    lpParam
 );
+
+int main()
+{
+    return 0;
+}

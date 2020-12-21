@@ -3,6 +3,13 @@
 #include <Windows.h>
 
 using namespace std;
+#define button1 1
+
+HWND hwndButton;
+void test(HWND hWnd)
+{
+    SetWindowTextA(hWnd,"hello");
+}
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
@@ -11,9 +18,19 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
     case WM_CLOSE:
         PostQuitMessage(0);
         break;
+    case WM_COMMAND:
+    {
+        if (LOWORD(wParam) == button1)
+        {
+            test(hwndButton);
+        }
+    }
     }
     return DefWindowProc(hWnd,msg,wParam,lParam);
 }
+
+
+
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
@@ -36,22 +53,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     RegisterClassEx(&wc);
     HWND hWnd = CreateWindowEx( 0, pClassName, "Tic Tac Toe", WS_CAPTION | WS_MINIMIZEBOX | WS_BORDER | WS_SYSMENU, 200, 200, 1024, 720, nullptr,nullptr, hInstance, nullptr);
     ShowWindow(hWnd,SW_SHOW);
-    while (true);
-    return 0;
-
-    HWND hwndButton = CreateWindowEx(
-        0,
-        "BUTTON",  
-        "O",      
-        WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,  // Styles 
-        10,         
-        10,         
-        100,        
-        100,        
-        hWnd,     
-        NULL,      
-        (HINSTANCE)GetWindowLongPtr(hWnd, GWLP_HINSTANCE),
-        NULL);     
+    hwndButton = CreateWindowEx(0,"BUTTON","X", WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON, 10, 10, 100, 100, hWnd, (HMENU) button1, (HINSTANCE)GetWindowLongPtr(hWnd, GWLP_HINSTANCE), NULL);   
 
     MSG msg;
     BOOL gResult;
@@ -69,6 +71,5 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     {
         msg.wParam;
     }
-
- 
 }
+

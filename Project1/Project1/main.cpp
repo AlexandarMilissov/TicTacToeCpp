@@ -35,10 +35,23 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
     RegisterClassEx(&wc);
     HWND hWnd = CreateWindowEx( 0, pClassName, "Tic Tac Toe", WS_CAPTION | WS_MINIMIZEBOX | WS_BORDER | WS_SYSMENU, 200, 200, 1024, 720, nullptr,nullptr, hInstance, nullptr);
-
     ShowWindow(hWnd,SW_SHOW);
     while (true);
     return 0;
+
+    HWND hwndButton = CreateWindowEx(
+        0,
+        "BUTTON",  
+        "O",      
+        WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,  // Styles 
+        10,         
+        10,         
+        100,        
+        100,        
+        hWnd,     
+        NULL,      
+        (HINSTANCE)GetWindowLongPtr(hWnd, GWLP_HINSTANCE),
+        NULL);     
 
     MSG msg;
     BOOL gResult;
@@ -56,4 +69,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     {
         msg.wParam;
     }
+
+ 
 }

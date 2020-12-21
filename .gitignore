@@ -33,4 +33,4 @@
 *.ipch
 *.suo
 *.db
-*.opendb
+*.VC.opendb

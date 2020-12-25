@@ -55,23 +55,23 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     wc.hInstance = hInstance;
     wc.hIcon = nullptr;
     wc.hCursor = nullptr;
-    wc.hbrBackground = nullptr;
+    wc.hbrBackground = CreateSolidBrush(RGB(255, 255, 255));
     wc.lpszMenuName = nullptr;
     wc.lpszClassName = pClassName;
     wc.hIconSm = nullptr;
 
     RegisterClassEx(&wc);
-    int windowsSize = min(GetSystemMetrics(SM_CYSCREEN), GetSystemMetrics(SM_CXSCREEN)) * 0.4;
-    const int buttonSize = (windowsSize - 40) / 3;
+    int windowsSize = min(GetSystemMetrics(SM_CYSCREEN), GetSystemMetrics(SM_CXSCREEN)) * 0.6;
+    const int buttonSize = ((windowsSize - 55) / 3);
 
-    HWND hWnd = CreateWindowEx( 0, pClassName, "Tic Tac Toe", WS_CAPTION | WS_MINIMIZEBOX | WS_BORDER | WS_SYSMENU, 0, 0, windowsSize, windowsSize, nullptr,nullptr, hInstance, nullptr);
+    HWND hWnd = CreateWindowEx( 0, pClassName, "Tic Tac Toe", WS_CAPTION | WS_MINIMIZEBOX | WS_BORDER | WS_SYSMENU, 0, 0, windowsSize, windowsSize + 20, nullptr,nullptr, hInstance, nullptr);
     ShowWindow(hWnd,SW_SHOW);
 
     for (int x = 0; x < 3; x++)
     {
         for (int y = 0; y < 3; y++)
         {
-            hwndButtons[(x * 3 + y)] = CreateWindowEx(0, "BUTTON", "", WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON, 10 + (y * (buttonSize + 10)), 10 + (x * (buttonSize + 10)), 0 + windowsSize/3, 0 + windowsSize/3, hWnd, (HMENU)(x*3 + y), (HINSTANCE)GetWindowLongPtr(hWnd, GWLP_HINSTANCE), NULL);
+            hwndButtons[(x * 3 + y)] = CreateWindowEx(0, "BUTTON", "", WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON, 10 + (y * (buttonSize + 10)), 10 + (x * (buttonSize + 10)), 0 + buttonSize , 0 + buttonSize , hWnd, (HMENU)(x*3 + y), (HINSTANCE)GetWindowLongPtr(hWnd, GWLP_HINSTANCE), NULL);
         }
     }
     MSG msg;

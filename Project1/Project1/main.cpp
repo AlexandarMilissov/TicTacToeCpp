@@ -45,7 +45,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     wc.hInstance = hInstance;
     wc.hIcon = nullptr;
     wc.hCursor = nullptr;
-    wc.hbrBackground = nullptr;
+    wc.hbrBackground = CreateSolidBrush(RGB(255, 255, 255));;
     wc.lpszMenuName = nullptr;
     wc.lpszClassName = pClassName;
     wc.hIconSm = nullptr;
@@ -72,4 +72,3 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
         msg.wParam;
     }
 }
-

@@ -4,7 +4,38 @@
 #include "Game.h"
 
 using namespace std;
+#define button1 1
 
+<<<<<<< HEAD
+=======
+HWND hwndButton;
+void test(HWND hWnd)
+{
+    SetWindowTextA(hWnd,"hello");
+}
+
+LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
+{
+    switch (msg)
+    {
+    case WM_CLOSE:
+        PostQuitMessage(0);
+        break;
+    case WM_COMMAND:
+    {
+        if (LOWORD(wParam) == button1)
+        {
+            test(hwndButton);
+        }
+    }
+    }
+    return DefWindowProc(hWnd,msg,wParam,lParam);
+}
+
+
+
+
+>>>>>>> parent of 7e4cc92... merge error
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
 <<<<<<< HEAD
@@ -21,25 +52,16 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     wc.hInstance = hInstance;
     wc.hIcon = nullptr;
     wc.hCursor = nullptr;
-    wc.hbrBackground = nullptr;
+    wc.hbrBackground = CreateSolidBrush(RGB(255, 255, 255));;
     wc.lpszMenuName = nullptr;
     wc.lpszClassName = pClassName;
     wc.hIconSm = nullptr;
 
     RegisterClassEx(&wc);
-    int windowsSize = min(GetSystemMetrics(SM_CYSCREEN), GetSystemMetrics(SM_CXSCREEN)) * 0.4;
-    const int buttonSize = (windowsSize - 40) / 3;
-
-    HWND hWnd = CreateWindowEx( 0, pClassName, "Tic Tac Toe", WS_CAPTION | WS_MINIMIZEBOX | WS_BORDER | WS_SYSMENU, 0, 0, windowsSize, windowsSize, nullptr,nullptr, hInstance, nullptr);
+    HWND hWnd = CreateWindowEx( 0, pClassName, "Tic Tac Toe", WS_CAPTION | WS_MINIMIZEBOX | WS_BORDER | WS_SYSMENU, 200, 200, 1024, 720, nullptr,nullptr, hInstance, nullptr);
     ShowWindow(hWnd,SW_SHOW);
+    hwndButton = CreateWindowEx(0,"BUTTON","X", WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON, 10, 10, 100, 100, hWnd, (HMENU) button1, (HINSTANCE)GetWindowLongPtr(hWnd, GWLP_HINSTANCE), NULL);   
 
-    for (int x = 0; x < 3; x++)
-    {
-        for (int y = 0; y < 3; y++)
-        {
-            hwndButtons[(x * 3 + y)] = CreateWindowEx(0, "BUTTON", "", WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON, 10 + (y * (buttonSize + 10)), 10 + (x * (buttonSize + 10)), 0 + windowsSize/3, 0 + windowsSize/3, hWnd, (HMENU)(x*3 + y), (HINSTANCE)GetWindowLongPtr(hWnd, GWLP_HINSTANCE), NULL);
-        }
-    }
     MSG msg;
     BOOL gResult;
     while ((gResult = GetMessage(&msg, nullptr, 0, 0)) > 0)
@@ -58,4 +80,3 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     }
 >>>>>>> parent of 9f21629... buttons scale properly
 }
-

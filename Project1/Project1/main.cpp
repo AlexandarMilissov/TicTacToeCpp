@@ -1,43 +1,73 @@
-#include <d2d1_1.h>
-#include <stdlib.h>
-#define NOMINMAX 
-#include <Windows.h>
-#undef min
+
 #include <limits>
+int maxInt = std::numeric_limits<int>::max();
+int minInt = std::numeric_limits<int>::min(); 
+
+
+#include <d2d1_1.h>
+
+
+#include <stdlib.h>
+
+#include <Windows.h>
 #include <time.h>
 #include <iomanip>
 #include <algorithm>
 
 using namespace std;
-#define button1 1
 
+HWND Main;
 HWND hwndButtons[9];
+
+#define endGame 10000
+#define draw 101
+#define humanWin 102
+#define computerWin 103
+
 char states[3][3];
-bool player = true;
-bool computer;
+
+enum Player
+{
+    none = ' ',
+    human = 'X',
+    computer = 'O'
+};
 struct Move
 {
     unsigned int x = 0;
     unsigned int y = 0;
 };
+bool checkWin(char c);
+bool isTie();
+Move minimax();
 
 void test(int code)
 {
     int i = code / 3;
     int j = code % 3;
-    if (states[i][j] == ' ')
+
+    //bool exit = false;
+
+    if (states[i][j] == Player::none)
     {
-        if (player)
-        {
-            states[i][j] = 'X';
-            SetWindowTextA(hwndButtons[code], "X");
-        }
-        else
-        {
-            states[i][j] = 'O';
-            SetWindowTextA(hwndButtons[code], "O");
-        }
-        player = !player;
+        states[i][j] = Player::human;
+        SetWindowTextA(hwndButtons[code], (LPCSTR)"X");
+        if (checkWin(Player::human))
+            PostMessage(Main,endGame, Player::human,0);
+
+        if (isTie())
+            PostMessage(Main, endGame, Player::none, 0);
+
+
+        Move move = minimax();
+        states[move.x][move.y] = Player::computer;
+        SetWindowTextA(hwndButtons[move.x*3 + move.y],(LPCSTR)"O");
+
+        if (checkWin(Player::computer))
+            PostMessage(Main, endGame, Player::computer, 0);
+
+        if (isTie())
+            PostMessage(Main, endGame, Player::none, 0);
     }
 }
 
@@ -45,9 +75,24 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
     switch (msg)
     {
+    case endGame:
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            for (int j = 0; j < 3; j++)
+            {
+                SetWindowTextA(hwndButtons[i * 3 + j], (LPCSTR)" ");
+                states[i][j] = Player::none;
+            }
+        }
+        return 0;
+        break;
+    }
     case WM_CLOSE:
+    {
         PostQuitMessage(0);
         break;
+    }
     case WM_COMMAND:
     {
 
@@ -64,7 +109,7 @@ bool isTie()
 {
     for (unsigned int i = 0; i < 3; i++)
     {
-        if (states[i][0] == ' ' || states[i][1] == ' ' || states[i][2] == ' ')
+        if (states[i][0] == Player::none || states[i][1] == Player::none || states[i][2] == Player::none)
             return false;
     }
     return true;
@@ -98,7 +143,7 @@ int maxSearch();
 
 Move minimax()
 {
-    unsigned int score = -1;
+    int score = maxInt;
     Move move;
 
     for (unsigned int i = 0; i < 3; i++)
@@ -106,9 +151,9 @@ Move minimax()
         for (unsigned int j = 0; j < 3; j++)
         {
 
-            if (states[i][j] == ' ')
+            if (states[i][j] == Player::none)
             {
-                states[i][j] = 'O';
+                states[i][j] = Player::computer;
 
                 int temp = maxSearch();
 
@@ -119,7 +164,7 @@ Move minimax()
                     move.x = i;
                     move.y = j;
                 }
-                states[i][j] = ' ';
+                states[i][j] = Player::none;
             }
         }
     }
@@ -129,28 +174,29 @@ Move minimax()
 
 int maxSearch()
 {
-    if (checkWin('O')) { return 10; }
-    else if (checkWin('X'))
+    if (checkWin(Player::human)) { return 10; }
+    else if (checkWin(Player::computer))
     {
         srand(time(NULL));
         int randomNumber = rand() % 15 + 1;
         if(randomNumber>10)
            return 10;
-        return -10;
+        else
+            return -10;
     }
     else if (isTie()) { return 0; }
 
-    int score = -2147483648;
+    int score = minInt;
 
     for (unsigned int i = 0; i < 3; i++)
     {
         for (unsigned int j = 0; j < 3; j++)
         {
-            if (states[i][j] == ' ')
+            if (states[i][j] == Player::none)
             {
-                states[i][j] = 'X';
+                states[i][j] = Player::human;
                 score = max(score, minSearch());
-                states[i][j] = ' ';
+                states[i][j] = Player::none;
             }
         }
     }
@@ -160,21 +206,21 @@ int maxSearch()
 
 int minSearch()
 {
-    if (checkWin('X')) { return 10; }
-    else if (checkWin('O')) { return -10; }
+    if (checkWin(Player::human)) { return 10; }
+    else if (checkWin(Player::computer)) { return -10; }
     else if (isTie()) { return 0; }
 
-   int score = 2147483647;
+    int score = maxInt;
 
     for (unsigned int i = 0; i < 3; i++)
     {
         for (unsigned int j = 0; j < 3; j++)
         {
-            if (states[i][j] ==' ')
+            if (states[i][j] ==Player::none)
             {
-                states[i][j] = 'O';
+                states[i][j] = Player::computer;
                 score = min(score, maxSearch());
-                states[i][j] = ' ';
+                states[i][j] = Player::none;
             }
         }
     }
@@ -209,16 +255,16 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     int buttonSize = (windowSize - 55) / 3;
 
     RegisterClassEx(&wc);
-    HWND hWnd = CreateWindowEx( 0, pClassName, "Tic Tac Toe", WS_CAPTION | WS_MINIMIZEBOX | WS_BORDER | WS_SYSMENU, 200, 200, windowSize, windowSize + 20, nullptr,nullptr, hInstance, nullptr);
-    ShowWindow(hWnd,SW_SHOW);
+    Main = CreateWindowEx( 0, pClassName, "Tic Tac Toe", WS_CAPTION | WS_MINIMIZEBOX | WS_BORDER | WS_SYSMENU, 200, 200, windowSize, windowSize + 20, nullptr,nullptr, hInstance, nullptr);
+    ShowWindow(Main,SW_SHOW);
 
 
     for (int i = 0; i < 3; i++)
     {
         for (int j = 0; j < 3; j++)
         {
-            hwndButtons[i*3+j] = CreateWindowEx(0, "BUTTON", "", WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON, 10 + i*(10 + buttonSize), 10 + j * (10 + buttonSize), buttonSize, buttonSize, hWnd, (HMENU)(i*3+j), (HINSTANCE)GetWindowLongPtr(hWnd, GWLP_HINSTANCE), NULL);
-            states[i][j] = ' ';
+            hwndButtons[i*3+j] = CreateWindowEx(0, "BUTTON", "", WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON, 10 + i*(10 + buttonSize), 10 + j * (10 + buttonSize), buttonSize, buttonSize, Main, (HMENU)(i*3+j), (HINSTANCE)GetWindowLongPtr(Main, GWLP_HINSTANCE), NULL);
+            states[i][j] = Player::none;
         }
     }
     

@@ -1,12 +1,13 @@
 #include <d2d1_1.h>
 #include <stdlib.h>
 #include <Windows.h>
-#include "Game.h"
 
 using namespace std;
 #define button1 1
 
-HWND hwndButton;
+HWND hwndButtons[9];
+char states[3][3];
+
 void test(HWND hWnd)
 {
     SetWindowTextA(hWnd,"hello");
@@ -21,10 +22,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
         break;
     case WM_COMMAND:
     {
-        if (LOWORD(wParam) == button1)
-        {
-            test(hwndButton);
-        }
+
+        int code = LOWORD(wParam);
+        test(hwndButtons[code]);
+        int i = code / 3;
+        int j = code % 3;
+
+
     }
     }
     return DefWindowProc(hWnd,msg,wParam,lParam);
@@ -32,8 +36,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
-	Game game(hInstance);
-=======
     const auto pClassName = "Tic Tac Toe";
 
     WNDCLASSEX wc;
@@ -50,11 +52,23 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     wc.lpszClassName = pClassName;
     wc.hIconSm = nullptr;
 
-    RegisterClassEx(&wc);
-    HWND hWnd = CreateWindowEx( 0, pClassName, "Tic Tac Toe", WS_CAPTION | WS_MINIMIZEBOX | WS_BORDER | WS_SYSMENU, 200, 200, 1024, 720, nullptr,nullptr, hInstance, nullptr);
-    ShowWindow(hWnd,SW_SHOW);
-    hwndButton = CreateWindowEx(0,"BUTTON","X", WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON, 10, 10, 100, 100, hWnd, (HMENU) button1, (HINSTANCE)GetWindowLongPtr(hWnd, GWLP_HINSTANCE), NULL);   
+    int windowSize = min(GetSystemMetrics( SM_CXSCREEN ), GetSystemMetrics(SM_CYSCREEN))*0.4;
+    int buttonSize = (windowSize - 55) / 3;
 
+    RegisterClassEx(&wc);
+    HWND hWnd = CreateWindowEx( 0, pClassName, "Tic Tac Toe", WS_CAPTION | WS_MINIMIZEBOX | WS_BORDER | WS_SYSMENU, 200, 200, windowSize, windowSize + 20, nullptr,nullptr, hInstance, nullptr);
+    ShowWindow(hWnd,SW_SHOW);
+
+
+    for (int i = 0; i < 3; i++)
+    {
+        for (int j = 0; j < 3; j++)
+        {
+            hwndButtons[i*3+j] = CreateWindowEx(0, "BUTTON", "X", WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON, 10 + i*(10 + buttonSize), 10 + j * (10 + buttonSize), buttonSize, buttonSize, hWnd, (HMENU)(i*3+j), (HINSTANCE)GetWindowLongPtr(hWnd, GWLP_HINSTANCE), NULL);
+            states[i][j] = ' ';
+        }
+    }
+    
     MSG msg;
     BOOL gResult;
     while ((gResult = GetMessage(&msg, nullptr, 0, 0)) > 0)

@@ -7,7 +7,10 @@ using namespace std;
 #define button1 1
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> parent of 7e4cc92... merge error
 HWND hwndButton;
 void test(HWND hWnd)
 {
@@ -35,6 +38,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
 
 
+<<<<<<< HEAD
+>>>>>>> parent of 7e4cc92... merge error
+=======
 >>>>>>> parent of 7e4cc92... merge error
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {

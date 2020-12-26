@@ -6,11 +6,6 @@
 using namespace std;
 #define button1 1
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
->>>>>>> parent of 7e4cc92... merge error
 HWND hwndButton;
 void test(HWND hWnd)
 {
@@ -35,16 +30,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
     return DefWindowProc(hWnd,msg,wParam,lParam);
 }
 
-
-
-
-<<<<<<< HEAD
->>>>>>> parent of 7e4cc92... merge error
-=======
->>>>>>> parent of 7e4cc92... merge error
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
-<<<<<<< HEAD
 	Game game(hInstance);
 =======
     const auto pClassName = "Tic Tac Toe";
@@ -84,5 +71,4 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     {
         msg.wParam;
     }
->>>>>>> parent of 9f21629... buttons scale properly
 }

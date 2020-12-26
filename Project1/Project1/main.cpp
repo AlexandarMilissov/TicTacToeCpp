@@ -1,6 +1,12 @@
 #include <d2d1_1.h>
 #include <stdlib.h>
+#define NOMINMAX 
 #include <Windows.h>
+#undef min
+#include <limits>
+#include <time.h>
+#include <iomanip>
+#include <algorithm>
 
 using namespace std;
 #define button1 1
@@ -8,6 +14,12 @@ using namespace std;
 HWND hwndButtons[9];
 char states[3][3];
 bool player = true;
+bool computer;
+struct Move
+{
+    unsigned int x = 0;
+    unsigned int y = 0;
+};
 
 void test(int code)
 {
@@ -22,7 +34,7 @@ void test(int code)
         }
         else
         {
-            states[i][j] = '0';
+            states[i][j] = 'O';
             SetWindowTextA(hwndButtons[code], "O");
         }
         player = !player;
@@ -47,6 +59,133 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
     }
     return DefWindowProc(hWnd,msg,wParam,lParam);
 }
+
+bool isTie()
+{
+    for (unsigned int i = 0; i < 3; i++)
+    {
+        if (states[i][0] == ' ' || states[i][1] == ' ' || states[i][2] == ' ')
+            return false;
+    }
+    return true;
+}
+
+bool checkWin(char space)
+{
+    for (unsigned int i = 0; i < 3; i++)
+    {
+        // Check horizontals
+        if (states[i][0] == space && states[i][1] == space && states[i][2] == space)
+            return true;
+
+        // Check verticals
+        if (states[0][i] == space && states[1][i] == space && states[2][i] == space)
+            return true;
+    }
+
+    // Check diagonals
+    if (states[0][0] == space && states[1][1] == space && states[2][2] == space)
+        return true;
+
+    if (states[0][2] == space && states[1][1] == space && states[2][0] == space)
+        return true;
+
+    return false;
+}
+int minSearch();
+int maxSearch();
+
+
+Move minimax()
+{
+    unsigned int score = -1;
+    Move move;
+
+    for (unsigned int i = 0; i < 3; i++)
+    {
+        for (unsigned int j = 0; j < 3; j++)
+        {
+
+            if (states[i][j] == ' ')
+            {
+                states[i][j] = 'O';
+
+                int temp = maxSearch();
+
+
+                if (temp < score)
+                {
+                    score = temp;
+                    move.x = i;
+                    move.y = j;
+                }
+                states[i][j] = ' ';
+            }
+        }
+    }
+
+    return move;
+}
+
+int maxSearch()
+{
+    if (checkWin('O')) { return 10; }
+    else if (checkWin('X'))
+    {
+        srand(time(NULL));
+        int randomNumber = rand() % 15 + 1;
+        if(randomNumber>10)
+           return 10;
+        return -10;
+    }
+    else if (isTie()) { return 0; }
+
+    int score = -2147483648;
+
+    for (unsigned int i = 0; i < 3; i++)
+    {
+        for (unsigned int j = 0; j < 3; j++)
+        {
+            if (states[i][j] == ' ')
+            {
+                states[i][j] = 'X';
+                score = max(score, minSearch());
+                states[i][j] = ' ';
+            }
+        }
+    }
+
+    return score;
+}
+
+int minSearch()
+{
+    if (checkWin('X')) { return 10; }
+    else if (checkWin('O')) { return -10; }
+    else if (isTie()) { return 0; }
+
+   int score = 2147483647;
+
+    for (unsigned int i = 0; i < 3; i++)
+    {
+        for (unsigned int j = 0; j < 3; j++)
+        {
+            if (states[i][j] ==' ')
+            {
+                states[i][j] = 'O';
+                score = min(score, maxSearch());
+                states[i][j] = ' ';
+            }
+        }
+    }
+
+    return score;
+}
+
+
+
+
+
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {

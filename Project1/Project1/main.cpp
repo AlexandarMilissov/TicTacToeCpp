@@ -1,25 +1,10 @@
 #include <d2d1_1.h>
 #include <stdlib.h>
 #include <Windows.h>
+#include "resource.h"
+#define IDB_BITMAP1                     101
 
 using namespace std;
-
-HWND hwndButtons[9];
-
-bool player = false;
-
-void test(HWND hWnd)
-{
-    if (player)
-    {
-        SetWindowTextA(hWnd, "0");
-    }
-    else
-    {
-        SetWindowTextA(hWnd, "X");
-    }
-    player = !player;
-}
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
@@ -30,51 +15,39 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
             PostQuitMessage(0);
             break;
         }
-        case WM_COMMAND:
-        {
-            int  x = LOWORD(wParam);
-            test(hwndButtons[x]);
-            break;
-        }
     }
     return DefWindowProc(hWnd, msg, wParam, lParam);
 }
 
-
-
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
-    const auto pClassName = "Tic Tac Toe";
+    const auto pClassName = "Victory screen";
 
-    WNDCLASSEX wc;
+    WNDCLASSEX wc = { 0 };
     wc.cbSize = sizeof(wc);
     wc.style = CS_OWNDC;
-    wc.lpfnWndProc = WndProc;
+    wc.lpfnWndProc = DefWindowProc;
     wc.cbClsExtra = 0;
     wc.cbWndExtra = 0;
     wc.hInstance = hInstance;
     wc.hIcon = nullptr;
     wc.hCursor = nullptr;
-    wc.hbrBackground = CreateSolidBrush(RGB(255, 255, 255));
+    wc.hbrBackground = CreatePatternBrush(LoadBitmap(hInstance, MAKEINTRESOURCE(IDB_BITMAP1)));
     wc.lpszMenuName = nullptr;
     wc.lpszClassName = pClassName;
     wc.hIconSm = nullptr;
 
     RegisterClassEx(&wc);
-    int windowsSize = min(GetSystemMetrics(SM_CYSCREEN), GetSystemMetrics(SM_CXSCREEN)) * 0.6;
-    const int buttonSize = ((windowsSize - 55) / 3);
 
-    HWND hWnd = CreateWindowEx( 0, pClassName, "Tic Tac Toe", WS_CAPTION | WS_MINIMIZEBOX | WS_BORDER | WS_SYSMENU, 0, 0, windowsSize, windowsSize + 20, nullptr,nullptr, hInstance, nullptr);
+    HWND hWnd = CreateWindowEx( 0, pClassName, "Congratulations",
+        WS_CAPTION | WS_BORDER | WS_SYSMENU,
+        200, 200, 480, 410, 
+        nullptr,nullptr, hInstance, nullptr);
+
     ShowWindow(hWnd,SW_SHOW);
 
-    for (int x = 0; x < 3; x++)
-    {
-        for (int y = 0; y < 3; y++)
-        {
-            hwndButtons[(x * 3 + y)] = CreateWindowEx(0, "BUTTON", "", WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON, 10 + (y * (buttonSize + 10)), 10 + (x * (buttonSize + 10)), 0 + buttonSize , 0 + buttonSize , hWnd, (HMENU)(x*3 + y), (HINSTANCE)GetWindowLongPtr(hWnd, GWLP_HINSTANCE), NULL);
-        }
-    }
     MSG msg;
+    
     BOOL gResult;
     while ((gResult = GetMessage(&msg, nullptr, 0, 0)) > 0)
     {
@@ -82,6 +55,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
         DispatchMessage(&msg);
     }
 
+    /*
     if (gResult == -1)
     {
         return -1;
@@ -89,6 +63,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     else
     {
         msg.wParam;
-    }
+    }*/
+
 }
+
 

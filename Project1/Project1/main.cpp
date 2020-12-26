@@ -7,10 +7,26 @@ using namespace std;
 
 HWND hwndButtons[9];
 char states[3][3];
+bool player = true;
 
-void test(HWND hWnd)
+void test(int code)
 {
-    SetWindowTextA(hWnd,"hello");
+    int i = code / 3;
+    int j = code % 3;
+    if (states[i][j] == ' ')
+    {
+        if (player)
+        {
+            states[i][j] = 'X';
+            SetWindowTextA(hwndButtons[code], "X");
+        }
+        else
+        {
+            states[i][j] = '0';
+            SetWindowTextA(hwndButtons[code], "O");
+        }
+        player = !player;
+    }
 }
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
@@ -24,9 +40,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
     {
 
         int code = LOWORD(wParam);
-        test(hwndButtons[code]);
-        int i = code / 3;
-        int j = code % 3;
+        test(code);
 
 
     }
@@ -64,7 +78,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     {
         for (int j = 0; j < 3; j++)
         {
-            hwndButtons[i*3+j] = CreateWindowEx(0, "BUTTON", "X", WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON, 10 + i*(10 + buttonSize), 10 + j * (10 + buttonSize), buttonSize, buttonSize, hWnd, (HMENU)(i*3+j), (HINSTANCE)GetWindowLongPtr(hWnd, GWLP_HINSTANCE), NULL);
+            hwndButtons[i*3+j] = CreateWindowEx(0, "BUTTON", "", WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON, 10 + i*(10 + buttonSize), 10 + j * (10 + buttonSize), buttonSize, buttonSize, hWnd, (HMENU)(i*3+j), (HINSTANCE)GetWindowLongPtr(hWnd, GWLP_HINSTANCE), NULL);
             states[i][j] = ' ';
         }
     }

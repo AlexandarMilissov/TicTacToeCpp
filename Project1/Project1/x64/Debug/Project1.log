@@ -1,5 +1,5 @@
 ﻿  main.cpp
-D:\Programming\C++\TicTacToeCpp\TicTacToeCpp\Project1\Project1\main.cpp(49,20): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-D:\Programming\C++\TicTacToeCpp\TicTacToeCpp\Project1\Project1\main.cpp(61,220): warning C4312: 'type cast': conversion from 'int' to 'HMENU' of greater size
-D:\Programming\C++\TicTacToeCpp\TicTacToeCpp\Project1\Project1\main.cpp(82): warning C4715: 'WinMain': not all control paths return a value
+D:\Programming\C++\TicTacToeCpp\TicTacToeCpp\Project1\Project1\main.cpp(69,20): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+D:\Programming\C++\TicTacToeCpp\TicTacToeCpp\Project1\Project1\main.cpp(81,219): warning C4312: 'type cast': conversion from 'int' to 'HMENU' of greater size
+D:\Programming\C++\TicTacToeCpp\TicTacToeCpp\Project1\Project1\main.cpp(102): warning C4715: 'WinMain': not all control paths return a value
   Project1.vcxproj -> D:\Programming\C++\TicTacToeCpp\TicTacToeCpp\Project1\x64\Debug\Project1.exe

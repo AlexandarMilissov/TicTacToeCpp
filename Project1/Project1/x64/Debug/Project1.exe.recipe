@@ -3,7 +3,11 @@
   <ProjectOutputs>
     <ProjectOutput>
 <<<<<<< HEAD
+<<<<<<< HEAD
       <FullPath>C:\Users\grafm\Documents\GitHub\TicTacToeCpp\Project1\x64\Debug\Project1.exe</FullPath>
+=======
+      <FullPath>D:\projects\DevC++\GitHub\TicTacToeCpp\Project1\x64\Debug\Project1.exe</FullPath>
+>>>>>>> parent of 9f21629... buttons scale properly
 =======
       <FullPath>D:\projects\DevC++\GitHub\TicTacToeCpp\Project1\x64\Debug\Project1.exe</FullPath>
 >>>>>>> parent of 9f21629... buttons scale properly

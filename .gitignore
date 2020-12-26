@@ -36,3 +36,7 @@
 *.db
 *.VC.opendb
 *.Browse.VC.db-shm
+*.exe.recipe
+*.log
+*.tlog
+*.lastbuildstate

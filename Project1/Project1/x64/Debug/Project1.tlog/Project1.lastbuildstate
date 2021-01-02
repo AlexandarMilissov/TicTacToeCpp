@@ -1,2 +1,6 @@
 PlatformToolSet=v142:VCToolArchitecture=Native32Bit:VCToolsVersion=14.28.29333:TargetPlatformVersion=10.0.18362.0:
+<<<<<<< HEAD
 Debug|x64|D:\projects\DevC++\GitHub\TicTacToeCpp\Project1\|
+=======
+Debug|x64|D:\Programming\C++\TicTacToeCpp\TicTacToeCpp\Project1\|
+>>>>>>> 2c76e60ddf822763453c5bc0e3d004d332fad4cf

@@ -1,10 +1,8 @@
-<<<<<<< HEAD
-﻿  Project1.vcxproj -> D:\projects\DevC++\GitHub\TicTacToeCpp\Project1\x64\Debug\Project1.exe
-=======
 ﻿  main.cpp
-D:\Programming\C++\TicTacToeCpp\TicTacToeCpp\Project1\Project1\main.cpp(180,19): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-D:\Programming\C++\TicTacToeCpp\TicTacToeCpp\Project1\Project1\main.cpp(254,20): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-D:\Programming\C++\TicTacToeCpp\TicTacToeCpp\Project1\Project1\main.cpp(266,219): warning C4312: 'type cast': conversion from 'int' to 'HMENU' of greater size
-D:\Programming\C++\TicTacToeCpp\TicTacToeCpp\Project1\Project1\main.cpp(287): warning C4715: 'WinMain': not all control paths return a value
+D:\Programming\C++\TicTacToeCpp\TicTacToeCpp\Project1\Project1\main.cpp(106,20): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+D:\Programming\C++\TicTacToeCpp\TicTacToeCpp\Project1\Project1\main.cpp(133,51): warning C4312: 'type cast': conversion from 'LONG' to 'HINSTANCE' of greater size
+D:\Programming\C++\TicTacToeCpp\TicTacToeCpp\Project1\Project1\main.cpp(226,19): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+D:\Programming\C++\TicTacToeCpp\TicTacToeCpp\Project1\Project1\main.cpp(299,20): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+D:\Programming\C++\TicTacToeCpp\TicTacToeCpp\Project1\Project1\main.cpp(311,219): warning C4312: 'type cast': conversion from 'int' to 'HMENU' of greater size
+D:\Programming\C++\TicTacToeCpp\TicTacToeCpp\Project1\Project1\main.cpp(332): warning C4715: 'WinMain': not all control paths return a value
   Project1.vcxproj -> D:\Programming\C++\TicTacToeCpp\TicTacToeCpp\Project1\x64\Debug\Project1.exe
->>>>>>> 2c76e60ddf822763453c5bc0e3d004d332fad4cf

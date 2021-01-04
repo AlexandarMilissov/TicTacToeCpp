@@ -5,11 +5,11 @@ int minInt = std::numeric_limits<int>::min();
 
 
 #include <d2d1_1.h>
-
-
 #include <stdlib.h>
-
 #include <Windows.h>
+#include <winuser.h>
+#include "resource.h"
+
 #include <time.h>
 #include <iomanip>
 #include <algorithm>
@@ -23,6 +23,7 @@ HWND hwndButtons[9];
 #define draw 101
 #define humanWin 102
 #define computerWin 103
+#define IDB_BITMAP1 101
 
 char states[3][3];
 
@@ -40,6 +41,7 @@ struct Move
 bool checkWin(char c);
 bool isTie();
 Move minimax();
+LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 void test(int code)
 {
@@ -71,20 +73,64 @@ void test(int code)
     }
 }
 
+void EndGame(HINSTANCE hInstance)
+{
+    const auto pClassName = "EndGame";
+
+    for (int i = 0; i < 3; i++)
+    {
+        for (int j = 0; j < 3; j++)
+        {
+            SetWindowTextA(hwndButtons[i * 3 + j], (LPCSTR)" ");
+            states[i][j] = Player::none;
+        }
+    }
+
+
+    WNDCLASSEX es;
+    es.cbSize = sizeof(es);
+    es.style = 0;
+    es.lpfnWndProc = WndProc;
+    es.cbClsExtra = 0;
+    es.cbWndExtra = 0;
+    es.hInstance = hInstance;
+    es.hIcon = nullptr;
+    es.hCursor = nullptr;
+    es.hbrBackground = CreateSolidBrush(RGB(0, 0, 0));
+    es.hbrBackground = CreatePatternBrush(LoadBitmap(hInstance, (MAKEINTRESOURCE(IDB_BITMAP1))));;
+    es.lpszMenuName = nullptr;
+    es.lpszClassName = pClassName;
+    es.hIconSm = nullptr;
+
+    RegisterClassEx(&es);
+    int windowSize = min(GetSystemMetrics(SM_CXSCREEN), GetSystemMetrics(SM_CYSCREEN)) * 0.4;
+    HWND victory = CreateWindowEx(0, pClassName, "End", WS_CAPTION | WS_MINIMIZEBOX | WS_BORDER | WS_SYSMENU, 200, 200, windowSize, windowSize + 20, nullptr, nullptr, hInstance, nullptr);
+    ShowWindow(victory, SW_SHOW);
+    MSG msg;
+    BOOL gResult;
+    while ((gResult = GetMessage(&msg, nullptr, 0, 0)) > 0)
+    {
+        TranslateMessage(&msg);
+        DispatchMessage(&msg);
+    }
+
+    if (gResult == -1)
+    {
+        return;
+    }
+    else
+    {
+        msg.wParam;
+    }
+
+}
 LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
     switch (msg)
     {
     case endGame:
     {
-        for (int i = 0; i < 3; i++)
-        {
-            for (int j = 0; j < 3; j++)
-            {
-                SetWindowTextA(hwndButtons[i * 3 + j], (LPCSTR)" ");
-                states[i][j] = Player::none;
-            }
-        }
+        EndGame((HINSTANCE)GetWindowLong(hWnd, -6));
         return 0;
         break;
     }
@@ -228,15 +274,13 @@ int minSearch()
     return score;
 }
 
-
-
-
-
-
+  
+using namespace std; 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
     const auto pClassName = "Tic Tac Toe";
 
+    
     WNDCLASSEX wc;
     wc.cbSize = sizeof(wc);
     wc.style = CS_OWNDC;
@@ -246,7 +290,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     wc.hInstance = hInstance;
     wc.hIcon = nullptr;
     wc.hCursor = nullptr;
-    wc.hbrBackground = CreateSolidBrush(RGB(255, 255, 255));;
+    wc.hbrBackground = CreateSolidBrush(RGB(255, 255, 255));
+    //wc.hbrBackground = CreatePatternBrush(LoadBitmap(hInstance, (MAKEINTRESOURCE(IDB_BITMAP1))));;
     wc.lpszMenuName = nullptr;
     wc.lpszClassName = pClassName;
     wc.hIconSm = nullptr;

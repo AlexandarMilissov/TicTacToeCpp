@@ -2,7 +2,7 @@
 // Microsoft Visual C++ generated include file.
 // Used by Project1.rc
 //
-#define IDB_BITMAP1                     101
+#define IDB_BITMAP1 101
 
 // Next default values for new objects
 // 

@@ -1,9 +1,8 @@
 ﻿  main.cpp
-D:\projects\DevC++\GitHub\TicTacToeCpp\Project1\Project1\main.cpp(184,19): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-D:\projects\DevC++\GitHub\TicTacToeCpp\Project1\Project1\main.cpp(284,20): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-D:\projects\DevC++\GitHub\TicTacToeCpp\Project1\Project1\main.cpp(296,219): warning C4312: 'type cast': conversion from 'int' to 'HMENU' of greater size
-D:\projects\DevC++\GitHub\TicTacToeCpp\Project1\Project1\main.cpp(317): warning C4715: 'WinMain': not all control paths return a value
-main.obj : error LNK2019: unresolved external symbol "void __cdecl VictoryScreen(void)" (?VictoryScreen@@YAXXZ) referenced in function "void __cdecl test(int)" (?test@@YAXH@Z)
-    Hint on symbols that are defined and could potentially match:
-      "void __cdecl VictoryScreen(struct HINSTANCE__ *)" (?VictoryScreen@@YAXPEAUHINSTANCE__@@@Z)
-D:\projects\DevC++\GitHub\TicTacToeCpp\Project1\x64\Debug\Project1.exe : fatal error LNK1120: 1 unresolved externals
+D:\Programming\C++\TicTacToeCpp\TicTacToeCpp\Project1\Project1\main.cpp(106,20): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+D:\Programming\C++\TicTacToeCpp\TicTacToeCpp\Project1\Project1\main.cpp(133,51): warning C4312: 'type cast': conversion from 'LONG' to 'HINSTANCE' of greater size
+D:\Programming\C++\TicTacToeCpp\TicTacToeCpp\Project1\Project1\main.cpp(226,19): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+D:\Programming\C++\TicTacToeCpp\TicTacToeCpp\Project1\Project1\main.cpp(299,20): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+D:\Programming\C++\TicTacToeCpp\TicTacToeCpp\Project1\Project1\main.cpp(311,219): warning C4312: 'type cast': conversion from 'int' to 'HMENU' of greater size
+D:\Programming\C++\TicTacToeCpp\TicTacToeCpp\Project1\Project1\main.cpp(332): warning C4715: 'WinMain': not all control paths return a value
+  Project1.vcxproj -> D:\Programming\C++\TicTacToeCpp\TicTacToeCpp\Project1\x64\Debug\Project1.exe

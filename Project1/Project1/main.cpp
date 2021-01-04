@@ -1,4 +1,3 @@
-
 #include <limits>
 int maxInt = std::numeric_limits<int>::max();
 int minInt = std::numeric_limits<int>::min(); 
@@ -13,6 +12,8 @@ int minInt = std::numeric_limits<int>::min();
 #include <time.h>
 #include <iomanip>
 #include <algorithm>
+#include "resource.h"
+#define IDB_BITMAP1                     101
 
 using namespace std;
 
@@ -40,6 +41,7 @@ struct Move
 bool checkWin(char c);
 bool isTie();
 Move minimax();
+void VictoryScreen();
 
 void test(int code)
 {
@@ -53,8 +55,10 @@ void test(int code)
         states[i][j] = Player::human;
         SetWindowTextA(hwndButtons[code], (LPCSTR)"X");
         if (checkWin(Player::human))
-            PostMessage(Main,endGame, Player::human,0);
-
+        {
+            PostMessage(Main, endGame, Player::human, 0);
+            VictoryScreen();
+        }
         if (isTie())
             PostMessage(Main, endGame, Player::none, 0);
 
@@ -228,7 +232,33 @@ int minSearch()
     return score;
 }
 
+void VictoryScreen(HINSTANCE hInstance)
+{
+     const auto Victory = "Victory screen";
 
+    WNDCLASSEX wc = { 0 };
+    wc.cbSize = sizeof(wc);
+    wc.style = CS_OWNDC;
+    wc.lpfnWndProc = DefWindowProc;
+    wc.cbClsExtra = 0;
+    wc.cbWndExtra = 0;
+    wc.hInstance = hInstance;
+    wc.hIcon = nullptr;
+    wc.hCursor = nullptr;
+    wc.hbrBackground = CreatePatternBrush(LoadBitmap(hInstance, MAKEINTRESOURCE(IDB_BITMAP1)));
+    wc.lpszMenuName = nullptr;
+    wc.lpszClassName = Victory;
+    wc.hIconSm = nullptr;
+
+    RegisterClassEx(&wc);
+
+    HWND hWnd = CreateWindowEx(0, Victory, "Congratulations",
+        WS_CAPTION | WS_BORDER | WS_SYSMENU,
+        200, 200, 480, 410,
+        nullptr,nullptr, hInstance, nullptr);
+
+    ShowWindow(hWnd,SW_SHOW);
+}
 
 
 
@@ -267,7 +297,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
             states[i][j] = Player::none;
         }
     }
-    
+
     MSG msg;
     BOOL gResult;
     while ((gResult = GetMessage(&msg, nullptr, 0, 0)) > 0)
